@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bobizz Label Maker</title>
+  <style>
+    :root{--bg:#ffffff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--ring:#111827}
+    *{box-sizing:border-box}
+    html,body{height:100%;}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+    h1{font-size:28px;text-align:center;margin:0 0 16px}
+    .grid{display:grid;gap:20px;grid-template-columns:1fr}
+    @media (min-width: 900px){.grid{grid-template-columns:1fr 1fr}}
+    .card{border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+    .section-title{font-weight:600;margin:10px 0 8px;font-size:14px;color:var(--muted)}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input,textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;outline:none}
+    input:focus,textarea:focus{border-color:var(--ring);box-shadow:0 0 0 3px rgba(17,24,39,.12)}
+    textarea{min-height:72px;resize:vertical}
+    .row{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    button,.link-btn{appearance:none;border:1px solid var(--border);background:#fff;padding:10px 14px;border-radius:999px;cursor:pointer}
+    button.primary{background:#111827;color:#fff;border-color:#111827}
+    .preview{border:1px dashed var(--border);border-radius:14px;overflow:hidden;background:#fff}
+    .help{font-size:12px;color:var(--muted);margin-top:8px}
+    .download{display:inline-flex;align-items:center;gap:8px;text-decoration:underline;margin-top:8px}
+    footer{margin-top:14px;text-align:right;font-size:12px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Bobizz Label Maker</h1>
+
+    <div class="grid">
+      <div class="card">
+        <div>
+          <div class="section-title">Boutique</div>
+          <label for="boutique">Boutique name</label>
+          <input id="boutique" value="Bobizz Designer Studio" />
+        </div>
+
+        <div class="section-title">Ship To</div>
+        <label for="rname">Receiver name</label>
+        <input id="rname" value="Bobisha" />
+
+        <label for="raddr">Receiver address</label>
+        <textarea id="raddr">Mylode</textarea>
+
+        <div class="row">
+          <div>
+            <label for="rcity">City</label>
+            <input id="rcity" value="Mylode" />
+          </div>
+          <div>
+            <label for="rpincode">Pincode</label>
+            <input id="rpincode" value="629803" />
+          </div>
+        </div>
+
+        <label for="rphone">Phone</label>
+        <input id="rphone" value="9791460642" />
+
+        <div class="section-title">From</div>
+        <label for="sname">Sender name</label>
+        <input id="sname" value="Abinesh" />
+
+        <label for="saddr">Sender address</label>
+        <textarea id="saddr">west neyyoor</textarea>
+
+        <label for="sphone">Phone</label>
+        <input id="sphone" value="9791560984" />
+
+        <div class="btns">
+          <button class="primary" id="generate">Generate</button>
+          <button id="downloadPng">Download PNG</button>
+          <button id="downloadPdf">Download PDF</button>
+        </div>
+        <div class="help">Tip: Click Generate after editing fields. Then use the download buttons.</div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Live Preview</div>
+        <div class="preview">
+          <canvas id="labelCanvas"></canvas>
+        </div>
+        <a id="dlLink" class="download" href="#" download="bobizz_pro_label.png" hidden>Download bobizz_pro_label.png</a>
+        <footer>Bobizz Designer Studio</footer>
+      </div>
+    </div>
+  </div>
+
+  <!-- jsPDF via CDN for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    (function(){
+      const W = 1000, H = 700;
+      const canvas = document.getElementById('labelCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = W; canvas.height = H;
+
+      function section(x, y, w, h, title, lines){
+        ctx.lineWidth = 2; ctx.strokeStyle = '#000';
+        ctx.strokeRect(x, y, w, h);
+        ctx.fillStyle = '#000';
+        ctx.font = '700 26px system-ui, -apple-system, Segoe UI, Roboto';
+        ctx.textAlign = 'left';
+        ctx.fillText(title, x+20, y+36);
+        ctx.font = '400 24px system-ui, -apple-system, Segoe UI, Roboto';
+        let yy = y + 75;
+        for(const line of lines){
+          wrapAndDrawText(line, x+20, yy, w-40, 28);
+          yy += 35;
+        }
+      }
+
+      function wrapAndDrawText(text, x, y, maxWidth, lineHeight){
+        const words = String(text||'').split(' ');
+        let line = '';
+        for(let n = 0; n < words.length; n++){
+          const testLine = line + words[n] + ' ';
+          const metrics = ctx.measureText(testLine);
+          if(metrics.width > maxWidth && n > 0){
+            ctx.fillText(line, x, y);
+            line = words[n] + ' ';
+            y += lineHeight;
+          } else {
+            line = testLine;
+          }
+        }
+        ctx.fillText(line, x, y);
+      }
+
+      function draw(){
+        const boutique = document.getElementById('boutique').value.trim() || 'Boutique';
+        const rname = document.getElementById('rname').value.trim();
+        const raddr = document.getElementById('raddr').value.trim();
+        const rcity = document.getElementById('rcity').value.trim();
+        const rpincode = document.getElementById('rpincode').value.trim();
+        const rphone = document.getElementById('rphone').value.trim();
+        const sname = document.getElementById('sname').value.trim();
+        const saddr = document.getElementById('saddr').value.trim();
+        const sphone = document.getElementById('sphone').value.trim();
+
+        // Clear
+        ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H);
+
+        // Border
+        ctx.strokeStyle = '#000'; ctx.lineWidth = 3;
+        ctx.strokeRect(20, 20, W - 40, H - 40);
+
+        // Title
+        ctx.fillStyle = '#000';
+        ctx.font = '700 40px system-ui, -apple-system, Segoe UI, Roboto';
+        ctx.textAlign = 'center';
+        ctx.fillText(boutique, W / 2, 70);
+
+        // Divider
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(50,110); ctx.lineTo(W-50,110); ctx.stroke();
+
+        // Sections
+        section(50, 140, W-100, 210, 'SHIP TO', [
+          rname,
+          raddr,
+          `${rcity} - ${rpincode}`,
+          `Phone: ${rphone}`,
+        ]);
+
+        section(50, 370, W-100, 160, 'FROM', [
+          sname,
+          saddr,
+          `Phone: ${sphone}`,
+        ]);
+
+        // Handle with care
+        ctx.strokeRect(50, 560, W-100, 90);
+        ctx.font = '700 26px system-ui, -apple-system, Segoe UI, Roboto';
+        ctx.textAlign = 'center';
+        ctx.fillText('HANDLE WITH CARE', W / 2, 615);
+
+        // Footer mark inside label (PDF bottom) — your brand
+        ctx.font = '400 14px system-ui, -apple-system, Segoe UI, Roboto';
+        ctx.textAlign = 'right';
+        ctx.fillText('Bobizz Designer Studio', W - 55, H - 30);
+
+        // Update quick download link
+        const url = canvas.toDataURL('image/png');
+        const link = document.getElementById('dlLink');
+        link.href = url;
+        link.hidden = false;
+      }
+
+      // First draw
+      draw();
+
+      // Buttons
+      document.getElementById('generate').addEventListener('click', draw);
+
+      document.getElementById('downloadPng').addEventListener('click', function(){
+        const a = document.createElement('a');
+        a.href = canvas.toDataURL('image/png');
+        a.download = 'bobizz_pro_label.png';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      });
+
+      document.getElementById('downloadPdf').addEventListener('click', function(){
+        const { jsPDF } = window.jspdf || {};
+        if(!jsPDF){ alert('PDF export library failed to load. Check your internet connection.'); return; }
+        const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: [288, 432] }); // 4x6 inch
+        const pageW = 288, pageH = 432;
+        const imgData = canvas.toDataURL('image/png');
+        const ratio = Math.min(pageW / W, pageH / H);
+        const imgW = W * ratio, imgH = H * ratio;
+        const x = (pageW - imgW) / 2;
+        const y = (pageH - imgH) / 2;
+        pdf.addImage(imgData, 'PNG', x, y, imgW, imgH);
+        pdf.save('bobizz_pro_label.pdf');
+      });
+    })();
+  </script>
+</body>
+</html>
