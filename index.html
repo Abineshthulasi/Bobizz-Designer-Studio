@@ -31,7 +31,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Bobizz Label Maker</h1>
+    <h1>Bobiz Label Maker</h1>
 
     <div class="grid">
       <div class="card">
@@ -85,7 +85,7 @@
         <div class="preview">
           <canvas id="labelCanvas"></canvas>
         </div>
-        <a id="dlLink" class="download" href="#" download="bobizz_pro_label.png" hidden>Download bobizz_pro_label.png</a>
+        <a id="dlLink" class="download" href="#" download="bobizz_pro_label.png" hidden>Download bobiz_pro_label.png</a>
         <footer>Bobiz Designer Studio</footer>
       </div>
     </div>
@@ -183,7 +183,7 @@
         // Footer mark inside label (PDF bottom) — your brand
         ctx.font = '400 14px system-ui, -apple-system, Segoe UI, Roboto';
         ctx.textAlign = 'right';
-        ctx.fillText('Bobizz Designer Studio', W - 55, H - 30);
+        ctx.fillText('Bobiz Designer Studio', W - 55, H - 30);
 
         // Update quick download link
         const url = canvas.toDataURL('image/png');
@@ -218,7 +218,7 @@
         const x = (pageW - imgW) / 2;
         const y = (pageH - imgH) / 2;
         pdf.addImage(imgData, 'PNG', x, y, imgW, imgH);
-        pdf.save('bobizz_pro_label.pdf');
+        pdf.save('bobiz_pro_label.pdf');
       });
     })();
   </script>
