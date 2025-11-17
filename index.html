@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Label </title>
+  <title> Label </title>
   <style>
     :root{--bg:#ffffff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--ring:#111827}
     *{box-sizing:border-box}
@@ -85,7 +85,7 @@
         <div class="preview">
           <canvas id="labelCanvas"></canvas>
         </div>
-        <a id="dlLink" class="download" href="#" download="bobizz_pro_label.png" hidden>Download bobiz_pro_label.png</a>
+        <a id="dlLink" class="download" href="#" download="bobiz_pro_label.png" hidden>Download bobiz_pro_label.png</a>
         <footer>Bobiz Designer Studio</footer>
       </div>
     </div>
@@ -201,7 +201,7 @@
       document.getElementById('downloadPng').addEventListener('click', function(){
         const a = document.createElement('a');
         a.href = canvas.toDataURL('image/png');
-        a.download = 'bobizz_pro_label.png';
+        a.download = 'bobiz_pro_label.png';
         document.body.appendChild(a);
         a.click();
         a.remove();
