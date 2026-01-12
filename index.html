@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title> Label </title>
+  <title>Bobiz Label Maker</title>
   <style>
     :root{--bg:#ffffff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--ring:#111827}
     *{box-sizing:border-box}
@@ -43,34 +43,34 @@
 
         <div class="section-title">Ship To</div>
         <label for="rname">Receiver name</label>
-        <input id="rname" value="Bobisha" />
+        <input id="rname" value="" />
 
         <label for="raddr">Receiver address</label>
-        <textarea id="raddr">Mylode</textarea>
+        <textarea id="raddr"></textarea>
 
         <div class="row">
           <div>
             <label for="rcity">City</label>
-            <input id="rcity" value="Mylode" />
+            <input id="rcity" value="" />
           </div>
           <div>
             <label for="rpincode">Pincode</label>
-            <input id="rpincode" value="629803" />
+            <input id="rpincode" value="" />
           </div>
         </div>
 
         <label for="rphone">Phone</label>
-        <input id="rphone" value="9791460642" />
+        <input id="rphone" value="" />
 
         <div class="section-title">From</div>
         <label for="sname">Sender name</label>
-        <input id="sname" value="Abinesh" />
+        <input id="sname" value="Bobiz Designer Studio" />
 
         <label for="saddr">Sender address</label>
-        <textarea id="saddr">west neyyoor</textarea>
+        <textarea id="saddr">Mylode</textarea>
 
         <label for="sphone">Phone</label>
-        <input id="sphone" value="9791560984" />
+        <input id="sphone" value="9087483225" />
 
         <div class="btns">
           <button class="primary" id="generate">Generate</button>
@@ -85,8 +85,8 @@
         <div class="preview">
           <canvas id="labelCanvas"></canvas>
         </div>
-        <a id="dlLink" class="download" href="#" download="bobiz_pro_label.png" hidden>Download bobiz_pro_label.png</a>
-        <footer>Bobiz Designer Studio</footer>
+        <a id="dlLink" class="download" href="#" download="bobizz_pro_label.png" hidden>Download bobizz_pro_label.png</a>
+        <footer>Minimal white • Professional layout like retail labels</footer>
       </div>
     </div>
   </div>
@@ -148,13 +148,13 @@
 
         // Border
         ctx.strokeStyle = '#000'; ctx.lineWidth = 3;
-        ctx.strokeRect(20, 20, W - 40, H - 40);
+        ctx.strokeRect(20, 20, W-40, H-40);
 
         // Title
         ctx.fillStyle = '#000';
         ctx.font = '700 40px system-ui, -apple-system, Segoe UI, Roboto';
         ctx.textAlign = 'center';
-        ctx.fillText(boutique, W / 2, 70);
+        ctx.fillText(boutique, W/2, 70);
 
         // Divider
         ctx.lineWidth = 2;
@@ -178,12 +178,12 @@
         ctx.strokeRect(50, 560, W-100, 90);
         ctx.font = '700 26px system-ui, -apple-system, Segoe UI, Roboto';
         ctx.textAlign = 'center';
-        ctx.fillText('HANDLE WITH CARE', W / 2, 615);
+        ctx.fillText('HANDLE WITH CARE', W/2, 615);
 
-        // Footer mark inside label (PDF bottom) — your brand
+        // Footer mark
         ctx.font = '400 14px system-ui, -apple-system, Segoe UI, Roboto';
         ctx.textAlign = 'right';
-        ctx.fillText('Bobiz Designer Studio', W - 55, H - 30);
+        ctx.fillText('Bobiz Designer Studio ', W-55, H-30);
 
         // Update quick download link
         const url = canvas.toDataURL('image/png');
@@ -201,7 +201,7 @@
       document.getElementById('downloadPng').addEventListener('click', function(){
         const a = document.createElement('a');
         a.href = canvas.toDataURL('image/png');
-        a.download = 'bobiz_pro_label.png';
+        a.download = 'bobizz_pro_label.png';
         document.body.appendChild(a);
         a.click();
         a.remove();
